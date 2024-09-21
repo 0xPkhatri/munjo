@@ -17,6 +17,33 @@ import { scheduledOrderModuleAddress } from "@/lib/scheduledOrders";
 import ScheduledTransfers from "@/components/ScheduledTransfers";
 import ProcessedTransfers from "@/components/ProcessedTransfers";
 
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
+import { gql, request } from "graphql-request";
+// import Data from '@/components/Data.tsx'
+
+const query = gql`
+  {
+    executionAddeds(first: 5) {
+      id
+      smartAccount
+      jobId
+      blockNumber
+    }
+    executionStatusUpdateds(first: 5) {
+      id
+      smartAccount
+      jobId
+      blockNumber
+    }
+  }
+`;
+const url =
+  "https://api.studio.thegraph.com/query/89586/treasury-flow-subgraph/version/latest";
+
 export default function Home() {
   const [safe, setSafe] = useState<SafeSmartAccountClient | undefined>();
   const [logs, setLogs] = useState<any[]>([]);
