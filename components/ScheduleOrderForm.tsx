@@ -2,15 +2,15 @@ import { useState, useEffect } from "react";
 import { SafeSmartAccountClient } from "@/lib/permissionless";
 import {
   install7579Module,
-  scheduleTransfer,
-  scheduledTransfersModuleAddress,
-} from "@/lib/scheduledTransfers";
+  scheduleOrder,
+  scheduledOrderModuleAddress,
+} from "@/lib/scheduledOrders";
 
 const ScheduledOrderForm: React.FC<{ safe: SafeSmartAccountClient }> = ({
   safe,
 }) => {
   //   const [recipient, setRecipient] = useState("");
-  const [tokenAddress, setTokenAddress] = useState("");
+  const [buytokenAddress, setBuyTokenAddress] = useState("");
   const [selltokenAddress, setSelltokenAddress] = useState("");
   const [recipientAddress, setRecipientAddress] = useState("");
   const [amount, setAmount] = useState(0);
@@ -27,7 +27,7 @@ const ScheduledOrderForm: React.FC<{ safe: SafeSmartAccountClient }> = ({
       const isModuleInstalled = await safe
         .isModuleInstalled({
           type: "executor",
-          address: scheduledTransfersModuleAddress,
+          address: scheduledOrderModuleAddress,
           context: "0x",
         })
         .catch(() => false);
@@ -59,18 +59,18 @@ const ScheduledOrderForm: React.FC<{ safe: SafeSmartAccountClient }> = ({
       >
         {/* Row 1 */}
         <div style={{ flexBasis: "50%" }}>
-          <label htmlFor="tokenAddress">buy Token:</label>
+          <label htmlFor="buytokenAddress">buy Token:</label>
           <input
             style={{ marginLeft: "20px" }}
-            id="tokenAddress"
+            id="buytokenAddress"
             placeholder="0x..."
-            onChange={(e) => setTokenAddress(e.target.value)}
-            value={tokenAddress}
+            onChange={(e) => setBuyTokenAddress(e.target.value)}
+            value={buytokenAddress}
           />
         </div>
 
         <div style={{ flexBasis: "50%" }}>
-          <label htmlFor="tokenAddress">sell token:</label>
+          <label htmlFor="selltokenAddress">sell token:</label>
           <input
             style={{ marginLeft: "20px" }}
             id="selltokenAddress"
@@ -154,14 +154,14 @@ const ScheduledOrderForm: React.FC<{ safe: SafeSmartAccountClient }> = ({
             recipient: `0x${recipientAddress}`, // Corrected string literal
           };
 
-          await (!is7579Installed ? install7579Module : scheduleTransfer)(
+          await (!is7579Installed ? install7579Module : scheduleOrder)(
             safe,
             orderInputData
           )
-            .then((txHash) => {
+            .then((txHash: string) => {
               setTxHash(txHash);
               setLoading(false);
-              setTokenAddress("");
+              setBuyTokenAddress("");
               setRecipientAddress("");
               setAmount(0);
               setExecutionInterval(0); // Reset on successful submission

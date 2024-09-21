@@ -8,13 +8,14 @@ import {
   type SafeSmartAccountClient,
 } from "../lib/permissionless";
 
-import ScheduledTransferForm from "../components/ScheduledTransferForm";
+// import ScheduledTransferForm from "../components/ScheduledTransferForm";
+import ScheduledOrderForm from "@/components/ScheduleOrderForm";
 
-import abi from "../abi/ScheduleTransfersModule.json";
-import { scheduledTransfersModuleAddress } from "@/lib/scheduledTransfers";
+import abi from "../abi/ScheduleOrderModule.json";
+// import { scheduledTransfersModuleAddress } from "@/lib/scheduledTransfers";
+import { scheduledOrderModuleAddress } from "@/lib/scheduledOrders";
 import ScheduledTransfers from "@/components/ScheduledTransfers";
 import ProcessedTransfers from "@/components/ProcessedTransfers";
-import ScheduledOrderForm from "@/components/ScheduleOrderForm";
 
 export default function Home() {
   const [safe, setSafe] = useState<SafeSmartAccountClient | undefined>();
@@ -27,7 +28,7 @@ export default function Home() {
 
   useEffect(() => {
     const unwatch = publicClient.watchContractEvent({
-      address: scheduledTransfersModuleAddress,
+      address: scheduledOrderModuleAddress,
       abi,
       // eventName: 'ExecutionAdded', // Optional
       // args: { smartAccount: safe?.account.address }, // Optional
@@ -55,7 +56,7 @@ export default function Home() {
         </>
       ) : (
         <>
-          <ScheduledTransferForm safe={safe} />
+          {/* <ScheduledTransferForm safe={safe} /> */}
           <ScheduledOrderForm safe={safe} />
           <div
             style={{
