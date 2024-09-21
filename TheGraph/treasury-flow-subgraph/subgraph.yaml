@@ -1,0 +1,35 @@
+specVersion: 1.0.0
+indexerHints:
+  prune: auto
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: ScheduledOrders
+    network: sepolia
+    source:
+      address: "0x5341B4E7B347b7dB9e124b15eBa10A5c236ec3bb"
+      abi: ScheduledOrders
+      startBlock: 5854212
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - ExecutionAdded
+        - ExecutionStatusUpdated
+        - ExecutionTriggered
+        - ExecutionsCancelled
+      abis:
+        - name: ScheduledOrders
+          file: ./abis/ScheduledOrders.json
+      eventHandlers:
+        - event: ExecutionAdded(indexed address,indexed uint256)
+          handler: handleExecutionAdded
+        - event: ExecutionStatusUpdated(indexed address,indexed uint256)
+          handler: handleExecutionStatusUpdated
+        - event: ExecutionTriggered(indexed address,indexed uint256)
+          handler: handleExecutionTriggered
+        - event: ExecutionsCancelled(indexed address)
+          handler: handleExecutionsCancelled
+      file: ./src/scheduled-orders.ts
