@@ -125,7 +125,11 @@ const ScheduledTransferForm: React.FC<{ safe: SafeSmartAccountClient }> = ({
       </div>
       <div>
         {loading ? <p>Processing, please wait...</p> : null}
-        {error ? <p>Processing, please wait...</p> : null}
+        {error ? (
+          <p>
+            There was an error processing the transaction. Please try again.
+          </p>
+        ) : null}
         {txHash ? (
           <>
             <p>
