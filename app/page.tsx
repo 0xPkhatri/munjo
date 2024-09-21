@@ -8,7 +8,7 @@ import {
   type SafeSmartAccountClient,
 } from "../lib/permissionless";
 
-// import ScheduledTransferForm from "../components/ScheduledTransferForm";
+import ScheduledTransferForm from "../components/ScheduledTransferForm";
 import ScheduledOrderForm from "@/components/ScheduleOrderForm";
 
 import abi from "../abi/ScheduleOrderModule.json";
@@ -78,12 +78,13 @@ export default function Home() {
       {safe == null ? (
         <>
           <button onClick={handleLoadSafe} style={{ marginTop: "40px" }}>
-            Create Safe
+            Start
           </button>
         </>
       ) : (
         <>
-          {/* <ScheduledTransferForm safe={safe} /> */}
+          <ScheduledTransferForm safe={safe} />
+
           <ScheduledOrderForm safe={safe} />
           <div
             style={{

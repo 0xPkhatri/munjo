@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import Providers from "./providers";
 
 import ExternalLink from "../public/external-link.svg";
 import Github from "../public/github.svg";
@@ -11,7 +12,7 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Schedule Trade using ERC-7579",
   description:
-    "Fully decentralized way selling treasury token selling for Dao's using 7579",
+    "Fully decentralized way selling Dao's treasury token using eip-7579",
 };
 
 export default function RootLayout({
@@ -53,11 +54,10 @@ export default function RootLayout({
           </div>
         </nav> */}
         <div style={{ width: "100%", textAlign: "center" }}>
-          <h1>Schedule Transfers</h1>
+          <h1>Dao Samrt Account</h1>
 
           <div>
-            Create a new ERC-7579-compatible Smart and use it to schedule Sell
-            Treasury.
+            Transfer/Selling Dao’s Treasury using eip-7579 smart modular account
           </div>
         </div>
         <div
