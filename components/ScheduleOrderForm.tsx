@@ -9,8 +9,9 @@ import {
 const ScheduledOrderForm: React.FC<{ safe: SafeSmartAccountClient }> = ({
   safe,
 }) => {
-  const [recipient, setRecipient] = useState("");
+  //   const [recipient, setRecipient] = useState("");
   const [tokenAddress, setTokenAddress] = useState("");
+  const [selltokenAddress, setSelltokenAddress] = useState("");
   const [recipientAddress, setRecipientAddress] = useState("");
   const [amount, setAmount] = useState(0);
   const [executionInterval, setExecutionInterval] = useState(0);
@@ -58,13 +59,24 @@ const ScheduledOrderForm: React.FC<{ safe: SafeSmartAccountClient }> = ({
       >
         {/* Row 1 */}
         <div style={{ flexBasis: "50%" }}>
-          <label htmlFor="tokenAddress">Token:</label>
+          <label htmlFor="tokenAddress">buy Token:</label>
           <input
             style={{ marginLeft: "20px" }}
             id="tokenAddress"
             placeholder="0x..."
             onChange={(e) => setTokenAddress(e.target.value)}
             value={tokenAddress}
+          />
+        </div>
+
+        <div style={{ flexBasis: "50%" }}>
+          <label htmlFor="tokenAddress">sell token:</label>
+          <input
+            style={{ marginLeft: "20px" }}
+            id="selltokenAddress"
+            placeholder="0x..."
+            onChange={(e) => setSelltokenAddress(e.target.value)}
+            value={selltokenAddress}
           />
         </div>
         <div style={{ flexBasis: "50%" }}>
@@ -129,27 +141,28 @@ const ScheduledOrderForm: React.FC<{ safe: SafeSmartAccountClient }> = ({
         </div>
       </div>
       <button
-        disabled={!recipient || !amount || !date || loading}
+        disabled={!amount || !date || loading}
         onClick={async () => {
           setLoading(true);
           setError(false);
           const startDate = new Date(date).getTime() / 1000;
-          const transferInputData = {
+          const orderInputData = {
             startDate,
             repeatEvery: executionInterval * 60 * 60 * 24, // Assuming interval is in days
             numberOfRepeats: numberOfExecution,
             amount,
-            recipient: `0x${recipient}`, // Corrected string literal
+            recipient: `0x${recipientAddress}`, // Corrected string literal
           };
 
           await (!is7579Installed ? install7579Module : scheduleTransfer)(
             safe,
-            transferInputData
+            orderInputData
           )
             .then((txHash) => {
               setTxHash(txHash);
               setLoading(false);
-              setRecipient("");
+              setTokenAddress("");
+              setRecipientAddress("");
               setAmount(0);
               setExecutionInterval(0); // Reset on successful submission
               setNumberOfExecution(0); // Reset on successful submission
@@ -163,7 +176,7 @@ const ScheduledOrderForm: React.FC<{ safe: SafeSmartAccountClient }> = ({
             });
         }}
       >
-        Schedule Transfer
+        Schedule Order
       </button>
       <div>
         {loading ? <p>Processing, please wait...</p> : null}
